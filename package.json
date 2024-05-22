@@ -1,0 +1,7 @@
+{
+    "name": "com.giangnt.custompackage",
+    "version": "1.0.0",
+    "displayName": "custom-package",
+    "description": "This is a personal package",
+    "unity": "2022.3"
+  }
