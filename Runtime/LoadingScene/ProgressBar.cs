@@ -32,7 +32,6 @@ namespace _ScriptBase
             }
             else
             {
-
                 Tween.Custom(image.fillAmount, progress, duration, (v) =>
                 {
                     image.fillAmount = v;

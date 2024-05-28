@@ -32,15 +32,8 @@ namespace GiangCustom.DesignPattern
 
         public static int CurrentLevel
         {
-            get => PlayerPrefs.GetInt(CURRENT_LEVEL, 0);
-            set
-            {
-                PlayerPrefs.SetInt(CURRENT_LEVEL, value);
-                if (OpenLevel < value)
-                {
-                    OpenLevel = value;
-                }
-            }
+            get => PlayerPrefs.GetInt(CURRENT_LEVEL, 1);
+            set => PlayerPrefs.SetInt(CURRENT_LEVEL, value);
         }
 
         public static int OpenLevel

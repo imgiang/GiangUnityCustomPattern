@@ -3,5 +3,8 @@
     "version": "1.0.0",
     "displayName": "custom-package",
     "description": "This is a personal package",
-    "unity": "2022.3"
+    "unity": "2022.3",
+    "dependencies": {
+        "com.[company-name].some-package": "1.0.0"
+    }
   }

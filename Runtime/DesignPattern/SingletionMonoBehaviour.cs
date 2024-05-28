@@ -2,25 +2,22 @@
 
 namespace GiangCustom.DesignPattern
 {
-    public abstract class SingletonMonoBehaviour<T> where T : MonoBehaviour, new()
+    public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     {
-        private static T instance;
+        private static T _instance;
 
-        public static T Instance
+        [SerializeField]
+        private bool canDestroyOnLoad;
+
+        public static T Instance => _instance;
+
+        public virtual void Awake()
         {
-            get
+            _instance = this as T;
+            if (!canDestroyOnLoad)
             {
-                if (instance == null)
-                {
-                    instance = GameObject.FindObjectOfType<T>();
-                }
-                return instance;
+                DontDestroyOnLoad(this);
             }
-        }
-
-        void OnDestroy()
-        {
-            instance = null;
         }
     }
 }

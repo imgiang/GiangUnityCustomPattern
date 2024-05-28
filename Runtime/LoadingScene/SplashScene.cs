@@ -5,6 +5,7 @@ using PrimeTween;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using Task = System.Threading.Tasks.Task;
 
 namespace GiangCustom.Runtime.LoadingScene
 {
@@ -15,6 +16,7 @@ namespace GiangCustom.Runtime.LoadingScene
 
         void Start()
         {
+            Application.targetFrameRate = 60;
             LoadScene();
         }
 
@@ -30,29 +32,13 @@ namespace GiangCustom.Runtime.LoadingScene
 
         public void LoadScene()
         {
-            StartCoroutine(Helper.StartAction(() =>
-                {
-                    LoadSceneCallback();
-                },
-                1f));
-        }
-
-        private void LoadSceneCallback()
-        {
-            if(PlayerPrefs.GetInt("check_first_privacy", 0) == 0)
-            {
-                PlayerPrefs.SetInt("check_first_privacy", 1);
-            }
-            else
-            {
-                if (loadSceneCo != null) { StopCoroutine(loadSceneCo); }
-                loadSceneCo = StartCoroutine(LoadAsyncScene());
-            }
+            StartCoroutine(LoadAsyncScene());
         }
 
         IEnumerator LoadAsyncScene()
         {
-            var asyncOperation = SceneManager.LoadSceneAsync(SceneDictionary.sceneDic[SceneEnum.MainScene]);
+            var asyncOperation = SceneManager.LoadSceneAsync("MainScene");
+            yield return Task.Delay(1000);
             if (asyncOperation != null)
             {
                 asyncOperation.allowSceneActivation = false;
