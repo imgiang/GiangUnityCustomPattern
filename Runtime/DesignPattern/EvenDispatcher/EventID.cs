@@ -7,5 +7,6 @@ namespace GiangCustom.DesignPattern.EvenDispatcher
         CompleteDrawOnCharacter,
         EndGame,
         StopGamePlay,
+        CharacterRunning,
     }
 }

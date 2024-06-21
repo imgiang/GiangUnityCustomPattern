@@ -24,7 +24,18 @@ namespace GiangCustom.Runtime.Sounds
         Drawing1,
         Drawing2,
         Combat,
-        
+        GreenAppear1,
+        GreenAppear2,
+        GreenWalk1,
+        GreenWalk2,
+        OrangeAppear1,
+        OrangeAppear2,
+        OrangeWalk1,
+        OrangeWalk2,
+        BlueAppear1,
+        BlueAppear2,
+        BlueWalk1,
+        BlueWalk2
     }
 
     [Serializable]
@@ -94,9 +105,9 @@ namespace GiangCustom.Runtime.Sounds
             sfx.PlayOneShot(s.audioClip);
         }
 
-        public void PlayBgSound(bool isPlay)
+        public void UpdateBGSound()
         {
-            if (isPlay)
+            if (PlayerPrefsManager.BGSound)
             {
                 music.Play();
             }
@@ -117,6 +128,11 @@ namespace GiangCustom.Runtime.Sounds
             {
                 music.Stop();
             }
+        }
+
+        public Sound GetAudioClip(SoundName soundName)
+        {
+            return Array.Find(sounds, s => s.soundName == soundName);
         }
     }
 }
