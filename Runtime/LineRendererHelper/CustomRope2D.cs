@@ -68,16 +68,19 @@ public class CustomRope2D : MonoBehaviour
         else if (IsLineOfSightTo2ndClosestPivotClear()
                  || IsShootLineCastCheckUnWrap())            //Since rope does not wrap, we should check if it should Unwrap
             ClearClosestPivotAndSwingFromList();
-        
-        if (isDragging)
-        {
-            Drag();
-        }
         SetRopeEndPoints();
 
         if (Input.GetMouseButtonUp(0))
         {
             CheckEndLevel();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDragging)
+        {
+            Drag();
         }
     }
 
@@ -107,16 +110,17 @@ public class CustomRope2D : MonoBehaviour
 
     private void Drag()
     {
-        if (countControlUpdate == 20)
-        {
-            var pos = MousePos();
-        
-            r2b.velocity = (pos - lastMousePosition) * 1700 * Time.deltaTime;
-            lastMousePosition = pos;
-            countControlUpdate = 0;
-        }
-        countControlUpdate++;
-        
+        var currentMousePosition = MousePos();
+        var t = (Vector3)r2b.position + (currentMousePosition - lastMousePosition).normalized *
+            Vector3.Distance(lastMousePosition, currentMousePosition);
+
+
+        Vector3 newPosition = Vector3.MoveTowards(r2b.position, t,
+            50f * Time.fixedDeltaTime);
+
+        r2b.MovePosition(newPosition);
+        lastMousePosition = currentMousePosition;
+
         SetRopeEndPoints();
     }
 
