@@ -21,6 +21,10 @@ namespace GiangCustom.Runtime.LineRendererHelper
                 Debug.LogError("Block Line is true");
                 isCollide = true;
             }
+            else
+            {
+                GetComponent<Collider2D>().isTrigger = true;
+            }
         }
 
         private void OnCollisionExit2D(Collision2D other)
@@ -40,6 +44,7 @@ namespace GiangCustom.Runtime.LineRendererHelper
         private void OnTriggerExit2D(Collider2D other)
         {
             isCollide = false;
+            GetComponent<Collider2D>().isTrigger = false;
         }
     }
 }

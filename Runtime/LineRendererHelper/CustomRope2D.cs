@@ -2,16 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
+using GiangCustom.DesignPattern.EvenDispatcher;
+using GiangCustom.Runtime.Polygon;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class CustomRope2D : MonoBehaviour
 {
+    [Header("Rope Settings")]
     [SerializeField] private LineRenderer line;
     [SerializeField] private Transform navigator;
     [SerializeField] private Transform startLineTrs;
 
-    [SerializeField] private GameObject pref;
+    public LineRenderer Line => line;
 
     private Camera camera;
     private Rigidbody2D r2b;
@@ -92,6 +96,7 @@ public class CustomRope2D : MonoBehaviour
         {
             endLevel = true;
             line.SetPosition(0, hit.transform.GetComponent<Transform>().position);
+            EventDispatcher.Instance.PostEvent(EventID.EatItem);
         }
     }
     bool IsShootLineCastCheckUnWrap()
@@ -183,12 +188,58 @@ public class CustomRope2D : MonoBehaviour
 
     void WrapTheRope()
     {
+        PolygonCollider2D poly = rayToClosestPivotPoint.collider.gameObject.GetComponent<PolygonCollider2D>();
         Vector2 polygonVertexPoint = GetClosestColliderPointFromRaycastHit(rayToClosestPivotPoint,
-            rayToClosestPivotPoint.collider.gameObject.GetComponent<PolygonCollider2D>());
+            poly);
 
+        WrapTheRestRope(poly, polygonVertexPoint);
+        
         AddSwingDirectionForNewPivot(polygonVertexPoint);
         AddLineRenderPivotPoint(polygonVertexPoint);
         PushPivotPointOutwards(rayToClosestPivotPoint.collider.gameObject.GetComponent<Rigidbody2D>());
+    }
+
+    private void WrapTheRestRope(PolygonCollider2D poly, Vector2 start)
+    {
+        var (lst1, lst2) = 
+            PolygonSplitter.DividePolygonPoints(poly, line.GetPosition(1), start);
+        
+        Debug.DrawLine(line.GetPosition(1), start, Color.red, 10f);
+
+        var lstUsed = lst1.Count > lst2.Count ? lst2 : lst1;
+        bool isHit = true;
+        for (int i = lstUsed.Count - 1; i >= 0; i--)
+        {
+            lstUsed[i] =
+                VectorTranslations(lstUsed[i], 
+                    (lstUsed[i] - (Vector2)poly.transform.gameObject.transform.position).normalized, 0.02f);
+
+            if (isHit)
+            {
+                var hit = Physics2D.Raycast(line.GetPosition(1),
+                    (lstUsed[i] - (Vector2)line.GetPosition(1)).normalized,
+                    1.5f * Vector3.Distance(lstUsed[i], (Vector2)line.GetPosition(1)));
+
+                if (hit &&
+                    hit.transform == poly.transform)
+                {
+                    continue;
+                }
+                else
+                {
+                    isHit = false;
+                }
+            }
+
+
+            if (lstUsed[i] == (Vector2)line.GetPosition(1) || lstUsed[i] == start)
+            {
+                continue;
+            }
+            AddSwingDirectionForNewPivot(lstUsed[i]);
+            AddLineRenderPivotPoint(lstUsed[i]);
+            PushPivotPointOutwards(rayToClosestPivotPoint.collider.gameObject.GetComponent<Rigidbody2D>());
+        }
     }
     
     void AddSwingDirectionForNewPivot(Vector2 polygonHitPoint)
