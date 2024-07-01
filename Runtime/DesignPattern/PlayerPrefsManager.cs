@@ -188,5 +188,33 @@ namespace GiangCustom.DesignPattern
         #endregion
 //===================================
 
+
+//===================================
+
+        #region BuildArea
+        private const string BuildAreaKey = "build-area-";
+        public static float[] GetBuildArea(string key)
+        {
+            var buildArea = GetArray<float>(string.Concat(BuildAreaKey, key));
+            if (buildArea.Length == 0)
+            {
+                buildArea = new float[2];
+                buildArea[0] = -1f;
+            }
+            SetArray(string.Concat(BuildAreaKey, key), buildArea);
+            return buildArea;
+        }
+        
+        public static void SetBuildArea(float value, string key)
+        {
+            var tmpLst = GetBuildArea(key).ToList();
+            if (tmpLst.Contains(value)) return;
+            tmpLst.Add(value);
+            SetArray(string.Concat(BuildAreaKey, key), tmpLst.ToArray());
+        }
+        #endregion
+//===================================
+
+
     }
 }
