@@ -9,7 +9,7 @@ namespace GiangCustom.DesignPattern
     public class PlayerPrefsManager
     {
         private static string format = "yyyy-MM-dd HH:mm:ss";
-        private const string CURRENT_LEVEL = "current_level";
+        private const string CURRENT_LEVEL = "current_level-";
         private const string DATETIME_START = "datetime_start";
 
         public static DateTime DatetimeStart
@@ -32,10 +32,14 @@ namespace GiangCustom.DesignPattern
             }
         }
 
-        public static int CurrentLevel
+        public static int GetCurrentLevel(string key)
         {
-            get => PlayerPrefs.GetInt(CURRENT_LEVEL, 1);
-            set => PlayerPrefs.SetInt(CURRENT_LEVEL, value);
+            return PlayerPrefs.GetInt(string.Concat(CURRENT_LEVEL, key), 1);
+        }
+
+        public static void SetCurrentLevel(string key, int value)
+        {
+            PlayerPrefs.SetInt(string.Concat(CURRENT_LEVEL, key), value);
         }
 
         #region MyRegion
