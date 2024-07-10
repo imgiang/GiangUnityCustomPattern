@@ -9,6 +9,7 @@ namespace GiangCustom.Runtime.BakingSheetCustom
     public struct Resource
     {
         public int Coin { get; set; }
+        public int Sum { get; set; }
 
         public static Resource operator +(Resource a, Resource b)
         {

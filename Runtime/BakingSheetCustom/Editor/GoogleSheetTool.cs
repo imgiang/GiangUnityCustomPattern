@@ -1,16 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+using System.Threading.Tasks;
 using Cathei.BakingSheet;
 using Cathei.BakingSheet.Internal;
-using Cathei.BakingSheet.Unity;
-using GiangCustom.Runtime.BakingSheetCustom.Containers;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
-public static class GoogleSheetTools
+namespace GiangCustom.Runtime.BakingSheetCustom.Editor
+{
+    public static class GoogleSheetTools
     {
         // unit test google account credential
         private static readonly string GoogleCredential = @"{
@@ -42,14 +40,9 @@ public static class GoogleSheetTools
             }
         }
 
-        [MenuItem("BakingSheet/Sample/Import From Google/ Import Rules")]
-        public static async void ConvertFromGoogle(string id)
+        public static async Task ConvertFromGoogle(string id, string jsonPath, SheetContainerBase sheetContainer)
         {
-            var jsonPath = Path.Combine(Application.streamingAssetsPath, "Google");
-
             var googleConverter = new GoogleSheetConverter(id, GoogleCredential, TimeZoneInfo.Utc);
-
-            var sheetContainer = new SheetContainer();
 
             await sheetContainer.Bake(googleConverter);
 
@@ -65,3 +58,4 @@ public static class GoogleSheetTools
         }
         
     }
+}

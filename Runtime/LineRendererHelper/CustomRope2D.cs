@@ -290,6 +290,7 @@ public class CustomRope2D : MonoBehaviour
     }
     void PushPivotPointOutwards(Rigidbody2D rgbdWrapped)
     {
+        if (!rgbdWrapped) return;
         Vector3 pointToPush = line.GetPosition(1);
         Vector2 pushVector = pointToPush - (Vector3)rgbdWrapped.worldCenterOfMass;
         pushVector = Vector2.ClampMagnitude(pushVector, pushOutIncrement * 5f);     //Pushed by half of the line width so that rope is not buried in obstacle when drawn on screen

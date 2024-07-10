@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assembly_CSharp.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace GiangCustom.DesignPattern
 {
     public class PlayerPrefsManager
     {
+        public static GameMode CurrentMode;
+        
         private static string format = "yyyy-MM-dd HH:mm:ss";
         private const string CURRENT_LEVEL = "current_level-";
         private const string DATETIME_START = "datetime_start";
@@ -34,7 +37,30 @@ namespace GiangCustom.DesignPattern
 
         public static int GetCurrentLevel(string key)
         {
-            return PlayerPrefs.GetInt(string.Concat(CURRENT_LEVEL, key), 1);
+            var level = PlayerPrefs.GetInt(string.Concat(CURRENT_LEVEL, key), 1);
+            if (key == GameMode.Hotel.ToString())
+            {
+                if (level > 60)
+                {
+                    SetCurrentLevel(key, 1);
+                }
+            }
+            if (key == GameMode.Dinner.ToString())
+            {
+                if (level > 20)
+                {
+                    SetCurrentLevel(key, 1);
+                }
+            }
+            if (key == GameMode.Store.ToString())
+            {
+                if (level > 20)
+                {
+                    SetCurrentLevel(key, 1);
+                }
+            }
+            level = PlayerPrefs.GetInt(string.Concat(CURRENT_LEVEL, key), 1);
+            return level;
         }
 
         public static void SetCurrentLevel(string key, int value)
@@ -148,18 +174,18 @@ namespace GiangCustom.DesignPattern
         public const string Male = "male";
         public const string Female = "female";
 
-        public static int[] GetSkinOwner(string key)
+        public static string[] GetSkinOwner(string key)
         {
-            var skins = GetArray<int>(string.Concat(SkinOwner, key));
-            if (skins.Length == 0)
+            var skins = GetArray<string>(string.Concat(SkinOwner, key)).ToList();
+            if (!skins.Contains("normal"))
             {
-                skins = new[] { 0 };
+                skins.Add("normal");
             }
-            SetArray(string.Concat(SkinOwner, key), skins);
-            return skins;
+            SetArray(string.Concat(SkinOwner, key), skins.ToArray());
+            return skins.ToArray();
         }
         
-        public static void AddSkinOwner(int value, string key)
+        public static void AddSkinOwner(string value, string key)
         {
             var tmpLst = GetSkinOwner(key).ToList();
             if (tmpLst.Contains(value)) return;
@@ -167,7 +193,7 @@ namespace GiangCustom.DesignPattern
             SetArray(string.Concat(SkinOwner, key), tmpLst.ToArray());
         }
 
-        public static bool HasSkinOwner(int value, string key)
+        public static bool HasSkinOwner(string value, string key)
         {
             var tmpLst = GetSkinOwner(key).ToList();
             return tmpLst.Contains(value);
@@ -176,16 +202,16 @@ namespace GiangCustom.DesignPattern
         private const string SkinMaleUsingKey = "skin-male-using";
         private const string SkinFemaleUsingKey = "skin-female-using";
 
-        public static int SkinMaleUsing
+        public static string SkinMaleUsing
         {
-            get => PlayerPrefs.GetInt(SkinMaleUsingKey, 0);
-            set => PlayerPrefs.SetInt(SkinMaleUsingKey, value);
+            get => PlayerPrefs.GetString(SkinMaleUsingKey, "normal");
+            set => PlayerPrefs.SetString(SkinMaleUsingKey, value);
         }
         
-        public static int SkinFemaleUsing
+        public static string SkinFemaleUsing
         {
-            get => PlayerPrefs.GetInt(SkinFemaleUsingKey, 0);
-            set => PlayerPrefs.SetInt(SkinFemaleUsingKey, value);
+            get => PlayerPrefs.GetString(SkinFemaleUsingKey, "normal");
+            set => PlayerPrefs.SetString(SkinFemaleUsingKey, value);
         }
 
         //=============================================
@@ -209,16 +235,57 @@ namespace GiangCustom.DesignPattern
             return buildArea;
         }
         
-        public static void SetBuildArea(float value, string key)
+        public static void SetBuildArea(float[] value, string key)
         {
-            var tmpLst = GetBuildArea(key).ToList();
-            if (tmpLst.Contains(value)) return;
-            tmpLst.Add(value);
-            SetArray(string.Concat(BuildAreaKey, key), tmpLst.ToArray());
+            var tmpLst = GetBuildArea(key);
+            tmpLst[0] = value[0];
+            tmpLst[1] = value[1];
+            if (Mathf.Approximately(value[1], 1))
+            {
+                tmpLst[0] = value[0] + 1;
+            }
+            SetArray(string.Concat(BuildAreaKey, key), tmpLst);
         }
         #endregion
 //===================================
 
+
+//===== daily reward ================
+
+        private const string DailyRewardKey = "daily-reward";
+        public static int[] GetDailyReward()
+        {
+            var dailyReward = GetArray<int>(DailyRewardKey);
+            if (dailyReward.Length == 0)
+            {
+                dailyReward = new int[4];
+            }
+            SetArray(DailyRewardKey, dailyReward);
+            return dailyReward;
+        }
+        
+        public static void ResetDailyReward()
+        {
+            var dailyReward =new int[4];
+            SetArray(DailyRewardKey, dailyReward);
+        }
+        
+        public static int GetDailyReward(int index)
+        {
+            var tmpLst = GetDailyReward();
+            return tmpLst[index];
+        }
+        
+        public static void SetDailyReward(int value)
+        {
+            var tmpLst = GetDailyReward();
+            tmpLst[value] = 1;
+            SetArray(DailyRewardKey, tmpLst);
+        }
+
+
+
+//===================================
 
     }
 }

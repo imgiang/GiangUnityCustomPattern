@@ -8,6 +8,9 @@ namespace GiangCustom.DesignPattern.EvenDispatcher
         EndGame,
         StopGamePlay,
         CharacterRunning,
-        EatItem
+        EatItem,
+        ChangeSkin,
+        ChangeBrush,
+        UpdateCoin
     }
 }

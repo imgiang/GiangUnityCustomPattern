@@ -35,8 +35,10 @@ namespace _ScriptBase
                 Tween.Custom(image.fillAmount, progress, duration, (v) =>
                 {
                     image.fillAmount = v;
-                    text.text = (v * 100).ToString("N0") + "%";
-
+                    if (text)
+                    {
+                        text.text = (v * 100).ToString("N0") + "%";
+                    }
                 });
             }
         }
