@@ -10,7 +10,7 @@ namespace GiangCustom.DesignPattern
     public class PlayerPrefsManager
     {
         public static GameMode CurrentMode;
-        
+
         private static string format = "yyyy-MM-dd HH:mm:ss";
         private const string CURRENT_LEVEL = "current_level-";
         private const string DATETIME_START = "datetime_start";
@@ -20,17 +20,17 @@ namespace GiangCustom.DesignPattern
             get
             {
                 string dateTm = PlayerPrefs.GetString(DATETIME_START, DateTime.Now.ToString(format));
-            
-                DateTime firstDate = DateTime.ParseExact(dateTm, 
+
+                DateTime firstDate = DateTime.ParseExact(dateTm,
                     format,
                     null);
-            
+
                 return firstDate;
             }
             set
             {
                 string dateTm = value.ToString(format);
-            
+
                 PlayerPrefs.SetString(DATETIME_START, dateTm);
             }
         }
@@ -45,6 +45,7 @@ namespace GiangCustom.DesignPattern
                     SetCurrentLevel(key, 1);
                 }
             }
+
             if (key == GameMode.Dinner.ToString())
             {
                 if (level > 20)
@@ -52,6 +53,7 @@ namespace GiangCustom.DesignPattern
                     SetCurrentLevel(key, 1);
                 }
             }
+
             if (key == GameMode.Store.ToString())
             {
                 if (level > 20)
@@ -59,6 +61,7 @@ namespace GiangCustom.DesignPattern
                     SetCurrentLevel(key, 1);
                 }
             }
+
             level = PlayerPrefs.GetInt(string.Concat(CURRENT_LEVEL, key), 1);
             return level;
         }
@@ -74,7 +77,7 @@ namespace GiangCustom.DesignPattern
         public const string PREFS_BGSOUND = "BGsound";
         public const string PREFS_SOUND = "sound";
         public const string PREFS_VIBRATE = "VibrateSound";
-        
+
 
         public static int Coin
         {
@@ -87,13 +90,13 @@ namespace GiangCustom.DesignPattern
             get => PlayerPrefs.GetInt(PREFS_SOUND, 1) == 1;
             set => PlayerPrefs.SetInt(PREFS_SOUND, value ? 1 : 0);
         }
-    
+
         public static bool BGSound
         {
             get => PlayerPrefs.GetInt(PREFS_BGSOUND, 1) == 1;
             set => PlayerPrefs.SetInt(PREFS_BGSOUND, value ? 1 : 0);
         }
-    
+
         public static bool VibrateSound
         {
             get => PlayerPrefs.GetInt(PREFS_VIBRATE, 1) == 1;
@@ -111,8 +114,8 @@ namespace GiangCustom.DesignPattern
             get => GetArray<int>(brush);
             set => SetArray(brush, value);
         }
-        
-        public static void SetAdsCheckForBrush(int index ,int value)
+
+        public static void SetAdsCheckForBrush(int index, int value)
         {
             var ads = AdsCheckForBrush;
             if (index < 0 || index >= ads.Length)
@@ -120,19 +123,21 @@ namespace GiangCustom.DesignPattern
                 Debug.LogError("Index out of bounds when setting AdsCheckForBrush value.");
                 return;
             }
+
             ads[index] = value;
             SetArray(brush, ads);
         }
-        
+
         private const string currentBrush = "current-brush";
-        
+
         public static int CurrentBrush
         {
             get => PlayerPrefs.GetInt(currentBrush, 0);
             set => PlayerPrefs.SetInt(currentBrush, value);
         }
+
         #endregion
-        
+
         public static T[] GetArray<T>(string key)
         {
             var json = PlayerPrefs.GetString(key);
@@ -143,21 +148,26 @@ namespace GiangCustom.DesignPattern
         {
             PlayerPrefs.SetString(key, JsonHelper.arrayToJson(value));
         }
+
 //===================================
+
         #region UserConfig
+
         private const string DecorRoom = "decor-room-";
+
         public static int[] GetDecorRoom(string key)
         {
-           return GetArray<int>(string.Concat(DecorRoom,key));
+            return GetArray<int>(string.Concat(DecorRoom, key));
         }
+
         public static int[] SetDecorRoom(string key, int[] array)
         {
-            Debug.Log(string.Concat(DecorRoom,key));
-            SetArray(string.Concat(DecorRoom,key), array);
+            Debug.Log(string.Concat(DecorRoom, key));
+            SetArray(string.Concat(DecorRoom, key), array);
             return GetDecorRoom(key);
         }
 
-        public static void SetUserDataForToiletBuild(int index ,int value, string key)
+        public static void SetUserDataForToiletBuild(int index, int value, string key)
         {
             var array = GetDecorRoom(key);
             if (index < 0 || index >= array.Length)
@@ -165,10 +175,11 @@ namespace GiangCustom.DesignPattern
                 Debug.LogError("Index out of bounds when setting AdsCheckForBrush value " + key);
                 return;
             }
+
             array[index] = value;
             SetDecorRoom(key, array);
         }
-        
+
         //================ skins =====================
         public const string SkinOwner = "skin-owner-";
         public const string Male = "male";
@@ -181,10 +192,11 @@ namespace GiangCustom.DesignPattern
             {
                 skins.Add("normal");
             }
+
             SetArray(string.Concat(SkinOwner, key), skins.ToArray());
             return skins.ToArray();
         }
-        
+
         public static void AddSkinOwner(string value, string key)
         {
             var tmpLst = GetSkinOwner(key).ToList();
@@ -198,7 +210,7 @@ namespace GiangCustom.DesignPattern
             var tmpLst = GetSkinOwner(key).ToList();
             return tmpLst.Contains(value);
         }
-        
+
         private const string SkinMaleUsingKey = "skin-male-using";
         private const string SkinFemaleUsingKey = "skin-female-using";
 
@@ -207,7 +219,7 @@ namespace GiangCustom.DesignPattern
             get => PlayerPrefs.GetString(SkinMaleUsingKey, "normal");
             set => PlayerPrefs.SetString(SkinMaleUsingKey, value);
         }
-        
+
         public static string SkinFemaleUsing
         {
             get => PlayerPrefs.GetString(SkinFemaleUsingKey, "normal");
@@ -215,14 +227,18 @@ namespace GiangCustom.DesignPattern
         }
 
         //=============================================
+
         #endregion
+
 //===================================
 
 
 //===================================
 
         #region BuildArea
+
         private const string BuildAreaKey = "build-area-";
+
         public static float[] GetBuildArea(string key)
         {
             var buildArea = GetArray<float>(string.Concat(BuildAreaKey, key));
@@ -231,10 +247,11 @@ namespace GiangCustom.DesignPattern
                 buildArea = new float[2];
                 buildArea[0] = -1f;
             }
+
             SetArray(string.Concat(BuildAreaKey, key), buildArea);
             return buildArea;
         }
-        
+
         public static void SetBuildArea(float[] value, string key)
         {
             var tmpLst = GetBuildArea(key);
@@ -244,15 +261,19 @@ namespace GiangCustom.DesignPattern
             {
                 tmpLst[0] = value[0] + 1;
             }
+
             SetArray(string.Concat(BuildAreaKey, key), tmpLst);
         }
+
         #endregion
+
 //===================================
 
 
 //===== daily reward ================
 
         private const string DailyRewardKey = "daily-reward";
+
         public static int[] GetDailyReward()
         {
             var dailyReward = GetArray<int>(DailyRewardKey);
@@ -260,22 +281,23 @@ namespace GiangCustom.DesignPattern
             {
                 dailyReward = new int[4];
             }
+
             SetArray(DailyRewardKey, dailyReward);
             return dailyReward;
         }
-        
+
         public static void ResetDailyReward()
         {
-            var dailyReward =new int[4];
+            var dailyReward = new int[4];
             SetArray(DailyRewardKey, dailyReward);
         }
-        
+
         public static int GetDailyReward(int index)
         {
             var tmpLst = GetDailyReward();
             return tmpLst[index];
         }
-        
+
         public static void SetDailyReward(int value)
         {
             var tmpLst = GetDailyReward();
@@ -285,6 +307,22 @@ namespace GiangCustom.DesignPattern
 
 
 
+//===================================
+
+//================== store current ads position =================
+
+        public static AdScreenType StoreLastAdsPosition;
+
+        private static AdScreenType currentAdsPosition;
+
+        public static AdScreenType CurrentAdsPosition
+        {
+            set
+            {
+                StoreLastAdsPosition = currentAdsPosition;
+                currentAdsPosition = value;
+            }
+        }
 //===================================
 
     }

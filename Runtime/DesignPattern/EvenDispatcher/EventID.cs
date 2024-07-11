@@ -11,6 +11,7 @@ namespace GiangCustom.DesignPattern.EvenDispatcher
         EatItem,
         ChangeSkin,
         ChangeBrush,
-        UpdateCoin
+        UpdateCoin,
+        RemoveAds,
     }
 }

@@ -11,7 +11,6 @@ namespace GiangCustom.Runtime.LoadingScene
 {
     public class SplashScene : MonoBehaviour
     {
-        public ProgressBar slideBar;
         private Coroutine loadSceneCo;
         
         [SerializeField] private OpenAdsController openAdsController;
@@ -45,8 +44,6 @@ namespace GiangCustom.Runtime.LoadingScene
             {
                 asyncOperation.allowSceneActivation = false;
             }
-        
-            slideBar.SetProgress(0.9f, 4f);
             yield return Tween.Delay(4f).ToYieldInstruction();
         
             if (asyncOperation != null)
@@ -60,11 +57,10 @@ namespace GiangCustom.Runtime.LoadingScene
                 {
                     Instantiate(openAdsController);
                 }
-                
-                slideBar.SetProgress(1f, 0.1f);
                 yield return Tween.Delay(0.1f).ToYieldInstruction();
 
                 asyncOperation.allowSceneActivation = true;
+                AdsControllerSingleton.Instance.ShowAdsBanner(AdScreenType.Main);
             }
         }
     }
