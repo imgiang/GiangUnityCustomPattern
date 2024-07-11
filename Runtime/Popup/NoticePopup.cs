@@ -1,4 +1,5 @@
 using System;
+using GiangCustom.Runtime.Sounds;
 using PrimeTween;
 using TMPro;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace GiangCustom.Runtime.Popup
             this.btnConfirm.onClick.RemoveAllListeners();
             this.btnConfirm.onClick.AddListener(() =>
             {
+                SoundManagerCustom.Instance.PlaySound(SoundName.Tap);
+                AdsController.Instance.ShowInters2(null, InterstitialPositionType.Close.ToString());
                 confirmAction?.Invoke();
                 Destroy(gameObject);
             });
@@ -26,6 +29,8 @@ namespace GiangCustom.Runtime.Popup
             this.btnClose.onClick.AddListener(() =>
             {
                 closeAction?.Invoke();
+                SoundManagerCustom.Instance.PlaySound(SoundName.Tap);
+                AdsController.Instance.ShowInters2(null, InterstitialPositionType.Close.ToString());
                 Destroy(gameObject);
             });
 

@@ -35,7 +35,8 @@ namespace GiangCustom.Runtime.Sounds
         BlueAppear1,
         BlueAppear2,
         BlueWalk1,
-        BlueWalk2
+        BlueWalk2,
+        CoinUse
     }
 
     [Serializable]

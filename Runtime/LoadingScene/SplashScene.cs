@@ -13,6 +13,8 @@ namespace GiangCustom.Runtime.LoadingScene
     {
         public ProgressBar slideBar;
         private Coroutine loadSceneCo;
+        
+        [SerializeField] private OpenAdsController openAdsController;
 
         void Start()
         {
@@ -44,15 +46,23 @@ namespace GiangCustom.Runtime.LoadingScene
                 asyncOperation.allowSceneActivation = false;
             }
         
-            slideBar.SetProgress(1f, 4f);
+            slideBar.SetProgress(0.9f, 4f);
             yield return Tween.Delay(4f).ToYieldInstruction();
         
             if (asyncOperation != null)
             {
-                while (asyncOperation.progress < 0.9f)
+                // while (!SDKInitializer.isAllSdkInitialized)
+                // {
+                //     yield return null;
+                // }
+                
+                if (!FindAnyObjectByType<OpenAdsController>())
                 {
-                    yield return null;
+                    Instantiate(openAdsController);
                 }
+                
+                slideBar.SetProgress(1f, 0.1f);
+                yield return Tween.Delay(0.1f).ToYieldInstruction();
 
                 asyncOperation.allowSceneActivation = true;
             }
