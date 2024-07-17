@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
 using GiangCustom.DesignPattern.EvenDispatcher;
+using GiangCustom.Runtime.OverUI;
 using GiangCustom.Runtime.Polygon;
 using Unity.Mathematics;
 using UnityEngine;
@@ -50,11 +51,19 @@ public class CustomRope2D : MonoBehaviour
         UpdateEdgeCollider2D();
     }
 
+    private bool isTurnOffHint = false;
     private void Update()
     {
         if (endLevel) return;
         if (Input.GetMouseButtonDown(0))
         {
+            if (MouseOverUILayerObject.IsPointerOverUIObject()) return;
+
+            if (!isTurnOffHint)
+            {
+                EventDispatcher.Instance.PostEvent(EventID.TurnOffHint);
+                isTurnOffHint = true;
+            }
             isDragging = true;
             lastMousePosition = MousePos();
             countControlUpdate = 15;
@@ -62,6 +71,7 @@ public class CustomRope2D : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            if (MouseOverUILayerObject.IsPointerOverUIObject()) return;
             isDragging = false;
             r2b.velocity = Vector2.zero;
             countControlUpdate = 0;

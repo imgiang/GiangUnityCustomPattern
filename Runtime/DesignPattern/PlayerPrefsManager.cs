@@ -191,6 +191,15 @@ namespace GiangCustom.DesignPattern
             if (!skins.Contains("normal"))
             {
                 skins.Add("normal");
+                if (key == Male)
+                {
+                    skins.Add("football");
+                    skins.Add("santa");
+                }
+                else
+                {
+                    skins.Add("wednesday");
+                }
             }
 
             SetArray(string.Concat(SkinOwner, key), skins.ToArray());

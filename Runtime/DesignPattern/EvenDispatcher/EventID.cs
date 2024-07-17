@@ -13,5 +13,6 @@ namespace GiangCustom.DesignPattern.EvenDispatcher
         ChangeBrush,
         UpdateCoin,
         RemoveAds,
+        TurnOffHint,
     }
 }

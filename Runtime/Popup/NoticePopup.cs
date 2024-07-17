@@ -40,9 +40,9 @@ namespace GiangCustom.Runtime.Popup
             if (panel)
             {
                 Sequence.Create()
-                    .Chain(Tween.Scale(panel, 1, 1.35f, 0.3f))
-                    .Chain(Tween.Scale(panel, 1.35f, 0.85f, 0.3f))
-                    .Chain(Tween.Scale(panel, 0.85f, 1, 0.4f));
+                    .Chain(Tween.Scale(panel, 1, 1.15f, 0.3f))
+                    .Chain(Tween.Scale(panel, 1.15f, 0.95f, 0.3f))
+                    .Chain(Tween.Scale(panel, 0.95f, 1, 0.4f));
             }
         }
     }

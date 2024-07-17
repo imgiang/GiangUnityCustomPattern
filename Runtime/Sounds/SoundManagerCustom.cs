@@ -49,6 +49,7 @@ namespace GiangCustom.Runtime.Sounds
     {
         [SerializeField] private AudioSource music;
         [SerializeField] private AudioSource sfx;
+        [SerializeField] private AudioSource sfx2;
         [SerializeField] private Sound[] sounds;
 
         private void Start()
@@ -64,27 +65,25 @@ namespace GiangCustom.Runtime.Sounds
 
         public void PlaySoundLoop(SoundName soundName, bool isStop = false)
         {
-            // Debug.LogError("play sound loop: " + soundName);
             if (isStop)
             {
-                sfx.Stop();
+                sfx2.Stop();
                 return;
             }
             if (!PlayerPrefsManager.Sound)
             {
-                if (sfx.isPlaying)
+                if (sfx2.isPlaying)
                 {
-                    sfx.Stop();
+                    sfx2.Stop();
                 }
                 return;
             }
 
             var s = Array.Find(sounds, s => s.soundName == soundName);
             if (s == default) return;
-            sfx.clip = s.audioClip;
-            // Debug.LogError("play sound loop 2: " + soundName);
-            sfx.loop = true;
-            sfx.Play();
+            sfx2.clip = s.audioClip;
+            sfx2.loop = true;
+            sfx2.Play();
         }
 
         public void PlaySound(SoundName soundName)
