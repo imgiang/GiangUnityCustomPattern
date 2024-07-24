@@ -36,6 +36,9 @@ namespace GiangCustom.DesignPattern
             }
         }
 
+        public static GameMode ModeGameLose = GameMode.None;
+        public static int CurrentLevelLose = 0;
+        public static int CurrentLevelLoseCount = 0;
         public static int GetCurrentLevel(string key)
         {
             var level = PlayerPrefs.GetInt(string.Concat(CURRENT_LEVEL, key), 1);
