@@ -9,6 +9,7 @@ namespace GiangCustom.DesignPattern
 {
     public class PlayerPrefsManager
     {
+        public static bool isFromWinMenu = false;
         public static GameMode CurrentMode;
 
         private static string format = "yyyy-MM-dd HH:mm:ss";
@@ -272,6 +273,22 @@ namespace GiangCustom.DesignPattern
             }
 
             SetArray(string.Concat(BuildAreaKey, key), tmpLst);
+        }
+        
+        public static bool CheckBuildArea()
+        {
+            var tmpLst1 = GetBuildArea(BuildAreaType.dinner.ToString());
+            var tmpLst2 = GetBuildArea(BuildAreaType.store.ToString());
+            var tmpLst3 = GetBuildArea(BuildAreaType.hotel.ToString());
+
+            if (tmpLst1[0] < 5 || tmpLst2[0] < 5 || tmpLst3[0] < 5 ||
+                tmpLst1[1] < 1 || tmpLst2[1] < 1 || tmpLst3[1] < 1)
+            {
+                // turn on red dot
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
