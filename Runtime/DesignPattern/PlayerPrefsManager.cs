@@ -188,7 +188,20 @@ namespace GiangCustom.DesignPattern
         public const string SkinOwner = "skin-owner-";
         public const string Male = "male";
         public const string Female = "female";
-
+        public const string SkinAdCount = "skin-ad-count";
+        
+        public static int GetSkinAdCount
+        {
+            get => PlayerPrefs.GetInt(SkinAdCount, 0) ;
+            set => PlayerPrefs.SetInt(SkinAdCount, value);
+        }
+        public const string BrushAdCount = "brush-ad-count";
+        public static int GetBrushAdCount
+        {
+            get => PlayerPrefs.GetInt(BrushAdCount, 0) ;
+            set => PlayerPrefs.SetInt(BrushAdCount, value);
+        }
+        
         public static string[] GetSkinOwner(string key)
         {
             var skins = GetArray<string>(string.Concat(SkinOwner, key)).ToList();
@@ -273,6 +286,7 @@ namespace GiangCustom.DesignPattern
             if (Mathf.Approximately(value[1], 1))
             {
                 tmpLst[0] = value[0] + 1;
+                tmpLst[1] = 0;
             }
 
             SetArray(string.Concat(BuildAreaKey, key), tmpLst);
